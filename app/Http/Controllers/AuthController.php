@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -19,7 +20,7 @@ class AuthController extends Controller
         $user = User::where('name', $request->input('name'))->orWhere('email', $request->input('name'))->first();
         if(!$user)
         {
-            return redirect()->back()->withErrors(['name' => 'Name or email did not found']);
+            return redirect()->back()->withErrors(['name' => 'Имя или email не найдены']);
         }
         $name_checker=['name' => $request->input('name'), 'password' => $request->input('password')];
         $email_checker=['email' => $request->input('name'), 'password' => $request->input('password')];
@@ -37,7 +38,7 @@ class AuthController extends Controller
         }
         else
         {
-            return redirect()->back()->withErrors(['password' => 'Password is incorrect']);
+            return redirect()->back()->withErrors(['password' => 'Неверный пароль']);
         }
     }
 }

@@ -1,5 +1,54 @@
-ok_lawyer
-@error('any_errors')
-{{$message}}
-@enderror
-<a href="{{route('logout')}}">Выйти</a>
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <title>Лента заявок</title>
+</head>
+<body>
+<div class="container">
+    <h1>Привет, {{$name}}</h1>
+    <div id="any_errors" class="text-danger">
+        @error('any_errors')
+        {{$message}}
+        @enderror
+    </div>
+    <h4><p>Ваши заявки: </p></h4>
+    @if(!$my_applications->isEmpty())
+        @foreach($my_applications as $question)
+            <div class="col-8">
+                <a href="{{route('messages', $question->id)}}">
+                    <h5>{{$loop->iteration}}) {{$question->subject }}</h5>
+                </a>
+                @if($question->image)
+                    <p><img src="{{ Storage::url('images/thumbnail/'.$question->image) }}" alt=""></p>
+                @endif
+            </div>
+        @endforeach
+    @else
+        <p>У вас нет заявок в работе</p>
+    @endif
+    <br><br><br><br>
+    <h4><p>Новые заявки:</p></h4>
+    @if(!$new_applications->isEmpty())
+        @foreach($new_applications as $question)
+            <div class="col-8">
+                <a href="{{route('messages', $question->id)}}">
+                    <h5>{{$loop->iteration}}) {{$question->subject }}</h5>
+                </a>
+                @if($question->image)
+                    <p><img src="{{ Storage::url('images/thumbnail/'.$question->image) }}" alt=""></p>
+                @endif
+            </div>
+        @endforeach
+    @else
+        <p>Новых заявок нет, хорошо работаете)</p>
+    @endif
+    <a href="{{route('logout')}}">Выйти</a>
+</div>
+</body>
+</html>

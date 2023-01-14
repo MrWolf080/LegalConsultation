@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -22,7 +23,7 @@ class AskQuestionConstroller extends Controller
                     where('category',$data['category'])->value('id');
         $data['id_client']=auth()->user()->getAuthIdentifier();
         $data['status']='Новая';
-        if($data['image'])
+        if($request->hasFile('image'))
         {
             $filename = $data['image']->getClientOriginalName();
             $data['image']->move(Storage::path('/public/images/') . 'origin/', $filename);
@@ -32,13 +33,12 @@ class AskQuestionConstroller extends Controller
             $data['image'] = $filename;
         }
         Application::create($data);
-        return response()->json(['status' => 'success', 'message'=>'Успешно создано']);
+        return redirect()->route('main_client_page');
     }
 
     public function question()
     {
         $categories=DB::table('application_categories')->pluck('category');
-        //dd($categories);
         return view('question',
             ['categories'=>$categories]
         );

@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\IsClientMiddleware;
 use App\Http\Middleware\IsLawyerMiddleware;
+use App\Http\Middleware\MessagesMiddleware;
 use App\Http\Middleware\OnlyFromJs;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -68,6 +69,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'is_client' => IsClientMiddleware::class,
         'is_lawyer' => IsLawyerMiddleware::class,
-        'only_from_js'=>OnlyFromJs::class
+        'only_from_js'=>OnlyFromJs::class,
+        'messages'=>MessagesMiddleware::class
     ];
 }

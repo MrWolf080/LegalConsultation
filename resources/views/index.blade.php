@@ -1,6 +1,5 @@
-<!-- resources/views/auth/client.blade.php -->
 <!DOCTYPE html>
-<html lang="{{app()->getLocale()}}}">
+<html lang="{{app()->getLocale()}}">
 <head>
     <title>Authorization Form</title>
     <meta name="csrf_token" content="{{csrf_token()}}">

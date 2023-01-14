@@ -3,6 +3,8 @@
 use App\Http\Controllers\AskQuestionConstroller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\LawyerController;
 use App\Http\Controllers\LogoutController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -24,12 +26,21 @@ Route::get('/', 'AuthFormController@index')->name('authorization');
 Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 Route::middleware('is_client')->group(function () {
     Route::get('/client', [ClientController::class, 'client'])->name('main_client_page');
-    Route::get('/question', [AskQuestionConstroller::class, 'question'])->name('ask_question');
-    Route::post('/question', [AskQuestionConstroller::class, 'asking_question'])->name('asking_question');
+    Route::get('/client_question', [AskQuestionConstroller::class, 'question'])->name('ask_question');
+    Route::post('/client_question', [AskQuestionConstroller::class, 'asking_question'])
+        ->name('asking_question');
+    Route::post('/solve_problem/{id}', [ClientController::class, 'solve_problem'])->name('solve_problem')
+        ->middleware('messages');
+
 });
 Route::middleware('is_lawyer')->group(function () {
-    Route::get('/lawyer', function (){return view('lawyer');})->name('main_lawyer_page');
+    Route::get('/lawyer', [LawyerController::class, 'lawyer'])->name('main_lawyer_page');
     // other routes that need authentication
+});
+
+Route::middleware('messages')->group(function () {
+    Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages');
+    Route::post('/messages/{id}', [MessagesController::class, 'send_message'])->name('send_message');
 });
 Route::get('/phpinfo', function(){return phpinfo();})->name('logout');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
