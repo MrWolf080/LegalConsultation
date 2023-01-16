@@ -25,48 +25,38 @@
             </div>
             <div class="form-group">
                 <label for="subject">Тема</label>
+                <div class="text-danger">
+                    @error('subject')
+                    {{$message}}
+                    @enderror
+                </div>
                 <input type="text" class="form-control" id="subject" name="subject">
             </div>
             <div class="form-group">
                 <label for="question">Вопрос</label>
+                <div class="text-danger">
+                    @error('question')
+                    {{$message}}
+                    @enderror
+                </div>
                 <textarea class="form-control" id="question" rows="3" name="question"></textarea>
             </div>
             <div class="form-group">
                 <label for="image">Картинка</label>
+                <div class="text-danger">
+                    @error('image')
+                    {{$message}}
+                    @enderror
+                </div>
                 <input type="file" class="form-control-file" id="image" name="image">
             </div>
             <input type="submit" class="btn btn-primary" value="Задать вопрос">
         </form>
     </div>
+    <div class="modal-footer">
+        <a href="{{route('index')}}">На главную</a>
+        <a href="{{route('logout')}}">Выйти</a>
+    </div>
 </div>
-<script type="module">
-    /*import axios from 'https://cdn.skypack.dev/axios';
-    document.getElementById("ask_question").addEventListener("submit", function(e)
-    {
-        e.preventDefault();
-        let formData = new FormData(this);
-        axios.post('{{route('asking_question')}}', formData)
-            .then(response =>
-            {
-                if (response.data.status === 'success')
-                {
-                    window.opener.document.getElementById('any_errors').innerHTML = response.data.message;
-                    window.close();
-                }
-            }).catch(error => {
-            if(error.response.status === 422){
-                window.opener.document.getElementById('any_errors').innerHTML =
-                    'Поля не должны быть пустыми и картинка должна иметь соответствующий тип';
-                window.close();
-            }
-            else
-            {
-                window.opener.document.getElementById('any_errors').innerHTML =
-                    'Произошла неизвестная ошибка';
-                window.close();
-            }
-            })
-    });*/
-</script>
 </body>
 </html>

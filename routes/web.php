@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('/', 'AuthFormController@index')->name('authorization');
+Route::get('/', 'IndexController@index')->name('index');
 Route::post('/auth', [AuthController::class, 'auth'])->name('auth');
 Route::middleware('is_client')->group(function () {
     Route::get('/client', [ClientController::class, 'client'])->name('main_client_page');
@@ -35,13 +35,13 @@ Route::middleware('is_client')->group(function () {
 });
 Route::middleware('is_lawyer')->group(function () {
     Route::get('/lawyer', [LawyerController::class, 'lawyer'])->name('main_lawyer_page');
-    // other routes that need authentication
+    Route::post('/lawyer/filter',[LawyerController::class, 'filter'])->name('filter_applications');
 });
 
 Route::middleware('messages')->group(function () {
     Route::get('/messages/{id}', [MessagesController::class, 'show'])->name('messages');
     Route::post('/messages/{id}', [MessagesController::class, 'send_message'])->name('send_message');
 });
-Route::get('/phpinfo', function(){return phpinfo();})->name('logout');
+
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 

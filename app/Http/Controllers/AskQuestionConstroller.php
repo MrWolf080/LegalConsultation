@@ -7,17 +7,31 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class AskQuestionConstroller extends Controller
 {
     public function asking_question(Request $request)
     {
-        $request->validate([
-            'subject' => ['required', 'string'],
-            'question' => ['required', 'string'],
-            'image'=>['image']
-        ]);
+        $validation=Validator::make($request->all(),
+            [
+                'subject' => ['required', 'string'],
+                'question'=>['required', 'string'],
+                'image'=>['image']
+            ],
+            [
+                'subject.required'=>'Поле тема не может быть пустым',
+                'subject.string'=>'Поле тема должно содержать строку',
+                'question.required'=>'Поле вопрос не может быть пустым',
+                'question.string'=>'Поле вопрос должно содержать строку',
+                'image.image'=>'Требуется загрузить именно картинку'
+            ]
+        );
+        if($validation->fails())
+        {
+            return redirect()->back()->withErrors($validation->errors());
+        }
         $data = $request->except(['_token']);
         $data['id_category']=Db::table('application_categories')->
                     where('category',$data['category'])->value('id');

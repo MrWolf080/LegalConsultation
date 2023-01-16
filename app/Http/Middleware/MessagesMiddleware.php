@@ -23,9 +23,9 @@ class MessagesMiddleware
         $id=$request->route('id');
         $application=Application::find($id);
         if(!Auth::check())
-            return redirect()->route('authorization')->withErrors(['any_errors'=>'Вы не авторизованы']);
+            return redirect()->route('index')->withErrors(['any_errors'=>'Вы не авторизованы']);
         $user=auth()->user();
-        $category=Roles::find($user->id_role)->category;
+        $category=Roles::find($user->id_role)->role;
         if(!$application)
             return redirect()->back()->withErrors(['any_errors'=>'Вопроса не существует']);
         if($category==='Клиент'&&$application->id_client!==$user->getAuthIdentifier())
@@ -33,8 +33,6 @@ class MessagesMiddleware
         if($application->id_lawyer)
             if($category==='Юрист'&&$application->id_lawyer!==$user->getAuthIdentifier())
                  return redirect()->back()->withErrors(['any_errors'=>'У вас нет прав для просмотра этого вопроса']);
-        if($application->status=='Закрыта')
-            return redirect()->back()->withErrors(['any_errors'=>'Заявка закрыта']);
         return $next($request);
     }
 }

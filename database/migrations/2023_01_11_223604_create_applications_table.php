@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('subject');
             $table->text('question');
             $table->string('image')->nullable();
+            $table->string('comment')->nullable();
             $table->unsignedBigInteger('id_client');
             $table->foreign('id_client')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_lawyer')->nullable();

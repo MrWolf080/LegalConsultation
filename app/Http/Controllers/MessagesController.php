@@ -27,7 +27,6 @@ class MessagesController extends Controller
         {
             $lawyer=User::find($application->id_lawyer);
         }
-
         $client=User::find($application->id_client);
         $role=Roles::find(auth()->user()->id_role)->role;
         $messages = Db::table('messages')
@@ -38,11 +37,21 @@ class MessagesController extends Controller
 
     public function send_message(Request $request, $id)
     {
-        $request->validate(
-        [
-            'message' => ['required', 'string'],
-            'image'=>['image']
-        ]);
+        $validation=Validator::make($request->all(),
+            [
+                'message' => ['required', 'string'],
+                'image'=>['image']
+            ],
+            [
+                'message.required'=>'Поле сообщение не может быть пустым',
+                'message.string'=>'Сообщение должно содержать строку',
+                'image.image'=>'Требуется загрузить именно картинку'
+            ]
+        );
+        if($validation->fails())
+        {
+            return redirect()->back()->withErrors($validation->errors());
+        }
         $application=Application::find($id);
         if(Roles::find(auth()->user()->id_role)->role==='Юрист'&&!$application->id_lawyer)
         {

@@ -7,16 +7,28 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-
     public function auth(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+        $validation=Validator::make($request->all(),
+            [
+                'name' => ['required', 'string'],
+                'password'=>['required','string']
+            ],
+            [
+                'name.required'=>'Поле имя не должно быть пустым',
+                'name.string'=>'Имя должно содержать строку',
+                'password.required'=>'Поле пароль не должно быть пустым',
+                'password.string'=>'Пароль должен содержать строку'
+            ]
+        );
+        if($validation->fails())
+        {
+            return redirect()->back()->withErrors($validation->errors());
+        }
         $user = User::where('name', $request->input('name'))->orWhere('email', $request->input('name'))->first();
         if(!$user)
         {

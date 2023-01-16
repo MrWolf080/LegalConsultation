@@ -18,11 +18,11 @@ class IsClientMiddleware
     {
         if(!(auth()->user()))
         {
-            return redirect()->back()->withErrors(['any_errors' => 'You are not authorized']);
+            return redirect()->back()->withErrors(['any_errors' => 'Вы не авторизованы']);
         }
         if(auth()->user()->role->role !== 'Клиент')
         {
-            return redirect()->back()->withErrors(['any_errors' => 'You have not permissions for this page']);
+            return redirect()->back()->withErrors(['any_errors' => 'У вас нет прав для просмотра этой страницы']);
         }
         return $next($request);
     }

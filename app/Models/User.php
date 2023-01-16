@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function application_author()
     {
-        return $this->HasMany(Application::class, 'id_user');
+        return $this->HasMany(Application::class, 'id_client');
     }
 
     public function application_lawyer()

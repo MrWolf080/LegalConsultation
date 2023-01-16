@@ -17,9 +17,9 @@ class Application extends Model
         'id_lawyer',
         'status'
     ];
-    public function author()
+    public function client()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_client');
     }
     public function lawyer()
     {
